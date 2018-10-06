@@ -549,7 +549,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
         #######################
         ### START CODE HERE ### (≈ 1 line of code)
         #######################        
-        AL, caches = None
+        AL, caches = L_model_forward(X, parameters)
         #####################
         ### END CODE HERE ###
         #####################
@@ -558,7 +558,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
         #######################
         ### START CODE HERE ### (≈ 1 line of code)
         #######################        
-        cost = None
+        cost = compute_cost(AL, Y)
         #####################
         ### END CODE HERE ###
         #####################
@@ -567,7 +567,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
         #######################
         ### START CODE HERE ### (≈ 1 line of code)
         #######################        
-        grads = None
+        grads = L_model_backward(AL, Y, caches)
         #####################
         ### END CODE HERE ###
         #####################
@@ -576,7 +576,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
         #######################
         ### START CODE HERE ### (≈ 1 line of code)
         #######################        
-        parameters = None
+        parameters = update_parameters(parameters, grads, learning_rate)
         #####################
         ### END CODE HERE ###
         #####################
@@ -620,7 +620,7 @@ def predict(X, parameters):
     ### START CODE HERE ### (≈ 5 line of code)
     #######################    
     # Convert AL to 0 or 1 by thresholding at 0.5
-    Y_hat = None  
+    Y_hat = 1 * (AL > 0.5)  
     #####################
     ### END CODE HERE ###
     #####################
