@@ -281,9 +281,9 @@ def linear_backward(dZ, cache):
     #######################
     ### START CODE HERE ### (≈ 3 lines of code)
     #######################
-    dW = None
-    db = None
-    dA_prev = None
+    dW = (1/m) * np.matmul(dZ, A_prev.T)
+    db = (1/m) * np.matmul(dZ, np.ones((m, 1)))
+    dA_prev = np.matmul(W.T, dZ)
     #####################
     ### END CODE HERE ###
     #####################
@@ -311,7 +311,8 @@ def sigmoid_backward(dA, activation_cache):
     #######################
     ### START CODE HERE ### (≈ 1 line of code)
     #######################        
-    dZ = None
+    A = 1 / (1 + np.exp(-Z))
+    dZ = dA * (A * (1-A))
     #####################
     ### END CODE HERE ###
     ##################### 
@@ -337,7 +338,7 @@ def relu_backward(dA, activation_cache):
     ### START CODE HERE ### (≈ 2 lines of code)
     #######################
     # Hint: When z <= 0, you should set dz to 0 as well.    
-    dZ = None    
+    dZ = dA *  (1*(Z>0))
     #####################
     ### END CODE HERE ###
     #####################   
@@ -363,7 +364,8 @@ def tanh_backward(dA, activation_cache):
     #######################
     ### START CODE HERE ### (≈ 1-2 lines of code)
     #######################        
-    dZ = None
+    A = np.tanh(Z)
+    dZ = dA * (1 - A*A)
     #####################
     ### END CODE HERE ###
     #####################     
@@ -392,8 +394,8 @@ def linear_activation_backward(dA, cache, activation):
         #######################
         ### START CODE HERE ### (≈ 2 lines of code)
         #######################
-        dZ = None
-        dA_prev, dW, db = None
+        dZ = relu_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache)
         #####################
         ### END CODE HERE ###
         #####################
@@ -402,8 +404,8 @@ def linear_activation_backward(dA, cache, activation):
         #######################
         ### START CODE HERE ### (≈ 2 lines of code)
         #######################
-        dZ = None
-        dA_prev, dW, db = None
+        dZ = sigmoid_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache)
         #####################
         ### END CODE HERE ###
         #####################
@@ -412,8 +414,8 @@ def linear_activation_backward(dA, cache, activation):
         #######################
         ### START CODE HERE ### (≈ 2 lines of code)
         #######################
-        dZ = None
-        dA_prev, dW, db = None
+        dZ = tanh_backward(dA, activation_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache)
         #####################
         ### END CODE HERE ###
         #####################
@@ -446,7 +448,7 @@ def L_model_backward(AL, Y, caches):
     #######################
     ### START CODE HERE ### (1 line of code)
     #######################    
-    dAL = None
+    dAL = -(Y/AL) + ((1-Y)/(1-AL))
     #####################
     ### END CODE HERE ###
     #####################
@@ -456,7 +458,7 @@ def L_model_backward(AL, Y, caches):
     ### START CODE HERE ### (approx. 2 lines)
     #######################
     current_cache = caches[L-1]    
-    grads["dA" + str(L-1)], grads["dW" + str(L)], grads["db" + str(L)] = None
+    grads["dA" + str(L-1)], grads["dW" + str(L)], grads["db" + str(L)] = linear_activation_backward(dAL, current_cache, 'sigmoid')
     #####################
     ### END CODE HERE ###
     #####################
@@ -469,10 +471,10 @@ def L_model_backward(AL, Y, caches):
         ### START CODE HERE ### (approx. 5 lines)
         #######################
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp = None
-        grads["dA" + str(l)] = None
-        grads["dW" + str(l + 1)] = None
-        grads["db" + str(l + 1)] = None       
+        dA_prev_temp, dW_temp, db_temp =  linear_activation_backward(grads['dA' + str(l+1)], current_cache, 'relu')
+        grads["dA" + str(l)] = dA_prev_temp
+        grads["dW" + str(l + 1)] = dW_temp
+        grads["db" + str(l + 1)] = db_temp       
         #####################
         ### END CODE HERE ###
         #####################
@@ -503,8 +505,8 @@ def update_parameters(parameters, grads, learning_rate):
     ### START CODE HERE ### (≈ 3 lines of code)
     #######################
     for l in range(L):
-        parameters["W" + str(l+1)] = None
-        parameters["b" + str(l+1)] = None
+        parameters["W" + str(l+1)] = parameters["W" + str(l+1)] - learning_rate*grads['dW' + str(l+1)]
+        parameters["b" + str(l+1)] = parameters["b" + str(l+1)] - learning_rate*grads['db' + str(l+1)]
     #####################        
     ### END CODE HERE ###
     #####################
