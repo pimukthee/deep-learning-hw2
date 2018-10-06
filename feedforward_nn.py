@@ -249,7 +249,7 @@ def compute_cost(AL, Y):
     #######################
     ### START CODE HERE ### (≈ 1 lines of code)
     #######################
-    cost = None   # Use the cost of logistic regression
+    cost = -(1.0/m) * np.sum(Y*np.log(AL) + (1-Y)*np.log(1-AL))   # Use the cost of logistic regression
     #####################
     ### END CODE HERE ###
     #####################
