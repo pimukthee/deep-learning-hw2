@@ -57,12 +57,12 @@ def plot_decision_boundary(model, X, y):
 if __name__ == '__main__':
         
     train_x, train_y = load_planar_dataset()
-    
+    n = train_x.shape[0]
     # Training feedforward neural network (TANH[L-1]-->SIGMOID)
     #######################
     ### START CODE HERE ### 
     #######################       
-    parameters = None      
+    parameters = fnn.L_layer_model(train_x, train_y, [n, 4, 1], learning_rate = 1.2, num_iterations = 10000, print_cost=True)      
     #####################
     ### END CODE HERE ###
     #####################

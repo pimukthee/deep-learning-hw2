@@ -122,7 +122,7 @@ def tanh_forward(Z):
     #######################
     ### START CODE HERE ### (≈ 1 line of code)    
     #######################    
-    A = 2*sigmoid_forward(2*Z) - 1
+    A = np.tanh(Z)
     #######################
     ###  END CODE HERE  ###
     #######################       
@@ -208,7 +208,7 @@ def L_model_forward(X, parameters):
         #######################
         ### START CODE HERE ### (≈ 2 lines of code)
         #######################     
-        A, cache = linear_activation_forward(A_prev, parameters['W' + str(l)], parameters['b' + str(l)], 'relu')
+        A, cache = linear_activation_forward(A_prev, parameters['W' + str(l)], parameters['b' + str(l)], 'tanh')
         caches.append(cache)
         #####################
         ### END CODE HERE ###
@@ -471,7 +471,7 @@ def L_model_backward(AL, Y, caches):
         ### START CODE HERE ### (approx. 5 lines)
         #######################
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp =  linear_activation_backward(grads['dA' + str(l+1)], current_cache, 'relu')
+        dA_prev_temp, dW_temp, db_temp =  linear_activation_backward(grads['dA' + str(l+1)], current_cache, 'tanh')
         grads["dA" + str(l)] = dA_prev_temp
         grads["dW" + str(l + 1)] = dW_temp
         grads["db" + str(l + 1)] = db_temp       
