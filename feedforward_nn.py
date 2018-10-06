@@ -643,7 +643,7 @@ def compute_accuracy(Y_hat, Y):
     #######################
     ### START CODE HERE ### (≈ 1 line of code)
     #######################     
-    accuracy = None
+    accuracy = np.sum(1 * (Y_hat == Y)) / Y.shape[1]
     #####################
     ### END CODE HERE ###
     #####################

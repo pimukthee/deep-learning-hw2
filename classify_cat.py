@@ -114,13 +114,13 @@ if __name__ == '__main__':
     # When running one model, just comment out the others
     
     # Run 1-layer model (logistic regression)
-    parameters = None
+    # parameters = fnn.L_layer_model(train_x, train_y, [n, 1], learning_rate = 0.005, num_iterations = 2400)
     
     # Run 2-layer model 
-    parameters = None
+    # parameters = fnn.L_layer_model(train_x, train_y, [n, 7, 1], learning_rate = 0.0075, num_iterations = 2400)
 
     # Run 4-layer model 
-    parameters = None
+    parameters = fnn.L_layer_model(train_x, train_y, [n, 20, 7, 5, 1], learning_rate = 0.0075, num_iterations = 2400, print_cost=True)
     
     #####################
     ### END CODE HERE ###
